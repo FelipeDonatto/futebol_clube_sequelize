@@ -11,11 +11,16 @@ export async function userLogin(req: Request, res: Response) {
   }
 
   const user = await findOne(email);
+
+  if (user === null) {
+    return res.status(401).json({ message: 'Incorrect email or password' });
+  }
+
   const userData = user?.dataValues;
   const checkPassword = await compare(password, userData.password);
 
-  if (user === null || !checkPassword) {
-    return res.status(400).json({ message: 'Invalid fields' });
+  if (!checkPassword) {
+    return res.status(401).json({ message: 'Incorrect email or password' });
   }
 
   return res.status(200).json({
@@ -25,4 +30,30 @@ export async function userLogin(req: Request, res: Response) {
   });
 }
 
-export function placeholder() {}
+type MyToken = {
+  data: {
+    userData: {
+      role: string;
+    };
+  };
+  iat: number;
+  exp: number;
+};
+
+export async function validateToken(req: Request, res: Response) {
+  const token = req.headers.authorization;
+  const secret = process.env.JWT_SECRET as string;
+
+  if (!token) {
+    return res.status(401).json({ message: 'Token not found' });
+  }
+  try {
+    const payload = JWT.verify(token, secret) as MyToken;
+    console.log(payload);
+    if (payload) {
+      return res.status(200).json({ role: payload.data.userData.role });
+    }
+  } catch (e) {
+    return res.status(401).json({ message: 'Expired or invalid token' });
+  }
+}
