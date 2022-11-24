@@ -49,7 +49,6 @@ export async function validateToken(req: Request, res: Response) {
   }
   try {
     const payload = JWT.verify(token, secret) as MyToken;
-    console.log(payload);
     if (payload) {
       return res.status(200).json({ role: payload.data.userData.role });
     }

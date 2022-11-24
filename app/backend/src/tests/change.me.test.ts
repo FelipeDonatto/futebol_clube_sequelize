@@ -6,7 +6,8 @@ import chaiHttp = require('chai-http');
 import App from '../app';
 import Example from '../database/models/ExampleModel';
 
-import { Response } from 'superagent';
+import { Response, Request } from 'superagent';
+import User from '../database/models/User';
 
 chai.use(chaiHttp);
 
@@ -15,33 +16,20 @@ const { app } = new App();
 const { expect } = chai;
 
 describe('Seu teste', () => {
-  /**
-   * Exemplo do uso de stubs com tipos
-   */
+  let chaiHttpResponse: Response;
+  describe('testa o login', function () {
+    afterEach(sinon.restore);
+    it('???????', async function () {
+      chaiHttpResponse = await chai.request(app).post('/login').send({
+        email: 'admin@admin.com',
+        password: 'secret_admin',
+      });
 
-  // let chaiHttpResponse: Response;
-
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
-
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
-
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
-
-  //   expect(...)
-  // });
-
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
+      expect(chaiHttpResponse.status).to.be.equal(200);
+      chaiHttpResponse = await chai.request(app).get('/login/validate').set({
+        Authorization:
+          ' eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJEYXRhIjp7ImlkIjoyLCJ1c2VybmFtZSI6IlVzZXIiLCJyb2xlIjoidXNlciIsImVtYWlsIjoidXNlckB1c2VyLmNvbSIsInBhc3N3b3JkIjoiJDJhJDA4JFk4QWJpOGpYdnNYeXFtLnJtcDBCLnVRQkE1cVV6N1Q2R2hsZy9DdlZyL2dMeFlqNVVBWlZPIn19LCJpYXQiOjE2NjkzMTIwMzEsImV4cCI6MTY2OTM5ODQzMX0.upwBloizCTH3EKdQWH97EOycJkXr9BUH5P7Rd3ZDDbY',
+      });
+    });
   });
 });
