@@ -5,8 +5,9 @@ const loginRoute = Router();
 
 loginRoute.post('/', (req: Request, res: Response) => User.userLogin(req, res));
 
-loginRoute.get('/validate', (req: Request, res: Response) =>
-  User.validateToken(req, res),
-);
+loginRoute.get('/validate', (req: Request, res: Response) => {
+  console.log();
+  return User.validateToken(req, res);
+});
 
 export default loginRoute;
