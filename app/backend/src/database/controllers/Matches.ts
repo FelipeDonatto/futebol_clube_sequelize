@@ -1,8 +1,14 @@
 import { Request, Response } from 'express';
-import { findAll } from '../services/Matches';
+import { filterFindAll, findAll } from '../services/Matches';
 
 export async function getAllMatches(req: Request, res: Response) {
-  const teams = await findAll();
+  const { inProgress } = req.query;
+  let teams;
+  if (!inProgress) {
+    teams = await findAll();
+  } else {
+    teams = await filterFindAll(Boolean(inProgress));
+  }
   return res.status(200).json(teams);
 }
 

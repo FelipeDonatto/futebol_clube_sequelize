@@ -12,6 +12,21 @@ export async function findAll() {
   return matches;
 }
 
+export async function filterFindAll(filter: boolean) {
+  const matches = await Matches.findAll({
+    where: {
+      inProgress: filter,
+    },
+    include: {
+      all: true,
+      attributes: {
+        exclude: ['id'],
+      },
+    },
+  });
+  return matches;
+}
+
 export async function findOne(id: number) {
   const teams = await Matches.findOne({ where: { id } });
   return teams;
