@@ -5,6 +5,7 @@ import Token from '../database/middlewares/token';
 import {
   getAllMatches,
   insertNewMatch,
+  updateGoals,
   updateMatch,
 } from '../database/controllers/Matches';
 
@@ -24,6 +25,10 @@ matchesRoute.post(
 matchesRoute.patch('/:id/finish', (req: Request, res: Response) => {
   console.log();
   updateMatch(req, res);
+});
+matchesRoute.patch('/:id', (req: Request, res: Response) => {
+  console.log();
+  updateGoals(req, res);
 });
 
 export default matchesRoute;

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import {
   filterFindAll,
   findAll,
+  goalsUpdate,
   insertNew,
   statusUpdate,
 } from '../services/Matches';
@@ -36,4 +37,11 @@ export async function updateMatch(req: Request, res: Response) {
   const { id } = req.params;
   await statusUpdate(Number(id));
   return res.status(200).json({ message: 'Finished' });
+}
+
+export async function updateGoals(req: Request, res: Response) {
+  const { id } = req.params;
+  const { homeTeamGoals, awayTeamGoals } = req.body;
+  await goalsUpdate(Number(id), homeTeamGoals, awayTeamGoals);
+  return res.status(200).json({ message: 'Updated' });
 }

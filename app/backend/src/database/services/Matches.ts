@@ -57,3 +57,18 @@ export async function statusUpdate(id: number) {
     return updatedMatch;
   }
 }
+
+export async function goalsUpdate(
+  id: number,
+  homeTeamGoals: number,
+  awayTeamGoals: number,
+) {
+  const match = await findOne(id);
+  if (match !== null) {
+    const updatedMatch = await match.update({
+      homeTeamGoals,
+      awayTeamGoals,
+    });
+    return updatedMatch;
+  }
+}
