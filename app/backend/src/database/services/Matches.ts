@@ -28,6 +28,22 @@ export async function filterFindAll(filter: boolean) {
 }
 
 export async function findOne(id: number) {
-  const teams = await Matches.findOne({ where: { id } });
-  return teams;
+  const match = await Matches.findOne({ where: { id } });
+  return match;
+}
+
+export async function insertNew(
+  homeTeam: number,
+  awayTeam: number,
+  homeTeamGoals: number,
+  awayTeamGoals: number,
+) {
+  const match = await Matches.create({
+    homeTeam,
+    awayTeam,
+    homeTeamGoals,
+    awayTeamGoals,
+    inProgress: true,
+  });
+  return match;
 }

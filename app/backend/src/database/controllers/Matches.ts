@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { filterFindAll, findAll } from '../services/Matches';
+import { filterFindAll, findAll, insertNew } from '../services/Matches';
 
 export async function getAllMatches(req: Request, res: Response) {
   const { inProgress } = req.query;
@@ -16,7 +16,13 @@ export async function getAllMatches(req: Request, res: Response) {
   return res.status(200).json(teams);
 }
 
-export async function getTeamById(req: Request, res: Response) {
-  const { id } = req.params;
-  return res.status(200).json(id);
+export async function insertNewMatch(req: Request, res: Response) {
+  const { homeTeam, homeTeamGoals, awayTeam, awayTeamGoals } = req.body;
+  const match = await insertNew(
+    homeTeam,
+    awayTeam,
+    homeTeamGoals,
+    awayTeamGoals,
+  );
+  return res.status(201).json(match);
 }
