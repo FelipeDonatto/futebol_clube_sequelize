@@ -47,3 +47,13 @@ export async function insertNew(
   });
   return match;
 }
+
+export async function statusUpdate(id: number) {
+  const match = await findOne(id);
+  if (match !== null) {
+    const updatedMatch = await match.update({
+      inProgress: false,
+    });
+    return updatedMatch;
+  }
+}

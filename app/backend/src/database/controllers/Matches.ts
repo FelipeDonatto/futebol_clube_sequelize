@@ -1,5 +1,10 @@
 import { Request, Response } from 'express';
-import { filterFindAll, findAll, insertNew } from '../services/Matches';
+import {
+  filterFindAll,
+  findAll,
+  insertNew,
+  statusUpdate,
+} from '../services/Matches';
 
 export async function getAllMatches(req: Request, res: Response) {
   const { inProgress } = req.query;
@@ -25,4 +30,10 @@ export async function insertNewMatch(req: Request, res: Response) {
     awayTeamGoals,
   );
   return res.status(201).json(match);
+}
+
+export async function updateMatch(req: Request, res: Response) {
+  const { id } = req.params;
+  await statusUpdate(Number(id));
+  return res.status(200).json({ message: 'Finished' });
 }
