@@ -4,11 +4,15 @@ import { filterFindAll, findAll } from '../services/Matches';
 export async function getAllMatches(req: Request, res: Response) {
   const { inProgress } = req.query;
   let teams;
-  if (!inProgress) {
+  if (inProgress === undefined) {
     teams = await findAll();
-  } else {
-    teams = await filterFindAll(Boolean(inProgress));
+    return res.status(200).json(teams);
   }
+  if (inProgress === 'true') {
+    teams = await filterFindAll(true);
+    return res.status(200).json(teams);
+  }
+  teams = await filterFindAll(false);
   return res.status(200).json(teams);
 }
 
